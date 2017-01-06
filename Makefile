@@ -1,6 +1,7 @@
 TMP=tmp
 OUT=out
 
+DERU-F1-SENTENCES-MEMRISE=$(TMP)/deru-f1-sentences-memrise.csv
 DERU-F1-SENTENCES-DE=$(TMP)/deru-f1-sentences-DE.txt
 DERU-F1-SENTENCES-RU=$(TMP)/deru-f1-sentences-RU.txt
 DERU-F1-SENTENCES-ROM=$(TMP)/deru-f1-sentences-ROM.txt
@@ -9,7 +10,7 @@ DERU-F1-SENTENCES=$(TMP)/deru-f1-sentences.txt
 DERU-F1-EBOOK-TEXT=$(TMP)/deru-f1-ebook.txt
 DERU-F1-EBOOK-PDF=GLOSSIKA-DERU-F1-EBK.pdf
 
-all: deru-f1
+all: $(DERU-F1-SENTENCES-MEMRISE)
 
 tmp:
 	mkdir -p $(TMP)
@@ -17,7 +18,13 @@ tmp:
 out:
 	mkdir -p $(OUT)
 
-deru-f1: $(DERU-F1-SENTENCES-DE) $(DERU-F1-SENTENCES-RU) $(DERU-F1-SENTENCES-ROM) $(DERU-F1-SENTENCES-IPA) | tmp out
+$(DERU-F1-SENTENCES-MEMRISE): $(DERU-F1-SENTENCES-DE)\
+                       $(DERU-F1-SENTENCES-RU)\
+                       $(DERU-F1-SENTENCES-ROM)\
+                       $(DERU-F1-SENTENCES-IPA) | tmp out
+	#./sh/memrise-de-ru-rom-ipa.sh $^ > $@
+	paste $^ > $@
+	split -l 100 -a 1 $@ memrise-deru-f1-
 
 $(DERU-F1-SENTENCES-DE): $(DERU-F1-SENTENCES) | tmp
 	./sh/DE-from-sentences.sh $(DERU-F1-SENTENCES) > $@
