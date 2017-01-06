@@ -1,5 +1,7 @@
 *.swp
 *.pdf
 tmp
+.DS_Store
+memrise-deru-f1-*
 
 

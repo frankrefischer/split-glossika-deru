@@ -18,8 +18,8 @@ tmp:
 out:
 	mkdir -p $(OUT)
 
-$(DERU-F1-SENTENCES-MEMRISE): $(DERU-F1-SENTENCES-DE)\
-                       $(DERU-F1-SENTENCES-RU)\
+$(DERU-F1-SENTENCES-MEMRISE): $(DERU-F1-SENTENCES-RU)\
+                       $(DERU-F1-SENTENCES-DE)\
                        $(DERU-F1-SENTENCES-ROM)\
                        $(DERU-F1-SENTENCES-IPA) | tmp out
 	#./sh/memrise-de-ru-rom-ipa.sh $^ > $@
