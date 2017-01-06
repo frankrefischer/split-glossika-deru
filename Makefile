@@ -17,21 +17,25 @@ tmp:
 out:
 	mkdir -p $(OUT)
 
-deru-f1: $(DERU-F1-SENTENCES-DE) $(DERU-F1-SENTENCES-RU) | tmp out
+deru-f1: $(DERU-F1-SENTENCES-DE) $(DERU-F1-SENTENCES-RU) $(DERU-F1-SENTENCES-ROM) $(DERU-F1-SENTENCES-IPA) | tmp out
 
 $(DERU-F1-SENTENCES-DE): $(DERU-F1-SENTENCES) | tmp
-#	mkdir -p $(TMP)
 	./sh/DE-from-sentences.sh $(DERU-F1-SENTENCES) > $@
 
-$(DERU-F1-SENTENCES-RU):
-	
+$(DERU-F1-SENTENCES-RU): $(DERU-F1-SENTENCES) | tmp
+	./sh/RU-from-sentences.sh $(DERU-F1-SENTENCES) > $@
+
+$(DERU-F1-SENTENCES-ROM): $(DERU-F1-SENTENCES) | tmp
+	./sh/ROM-from-sentences.sh $(DERU-F1-SENTENCES) > $@
+
+$(DERU-F1-SENTENCES-IPA): $(DERU-F1-SENTENCES) | tmp
+	./sh/IPA-from-sentences.sh $(DERU-F1-SENTENCES) > $@
+
 
 $(DERU-F1-SENTENCES): $(DERU-F1-EBOOK-TEXT) | tmp
-#	mkdir -p $(TMP)
 	./sh/sentences-from-text.sh $(DERU-F1-EBOOK-TEXT) > $@
 
 $(DERU-F1-EBOOK-TEXT): | tmp
-#	mkdir -p $(TMP)
 	./sh/text-from-pdf.sh $(DERU-F1-EBOOK-PDF) > $@
  
 clean:
