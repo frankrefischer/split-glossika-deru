@@ -1,6 +1,7 @@
 TMP=tmp
 OUT=out
 
+NUMBERS-0001-TO-1000=$(TMP)/numbers-0001-to-1000.txt
 DERU-F1-SENTENCES-MEMRISE=$(TMP)/deru-f1-sentences-memrise.csv
 DERU-F1-SENTENCES-DE=$(TMP)/deru-f1-sentences-DE.txt
 DERU-F1-SENTENCES-RU=$(TMP)/deru-f1-sentences-RU.txt
@@ -18,13 +19,18 @@ tmp:
 out:
 	mkdir -p $(OUT)
 
-$(DERU-F1-SENTENCES-MEMRISE): $(DERU-F1-SENTENCES-RU)\
+$(DERU-F1-SENTENCES-MEMRISE):\
+                       $(DERU-F1-SENTENCES-RU)\
                        $(DERU-F1-SENTENCES-DE)\
+                       $(NUMBERS-0001-TO-1000)\
                        $(DERU-F1-SENTENCES-ROM)\
                        $(DERU-F1-SENTENCES-IPA) | tmp out
 	#./sh/memrise-de-ru-rom-ipa.sh $^ > $@
 	paste $^ > $@
-	split -l 100 -a 1 $@ memrise-deru-f1-
+	(cd $(TMP); split -l 99 -a 1 $(@F) memrise-deru-f1-)
+
+$(NUMBERS-0001-TO-1000): | tmp
+	seq -w 0001 1000 > $@
 
 $(DERU-F1-SENTENCES-DE): $(DERU-F1-SENTENCES) | tmp
 	./sh/DE-from-sentences.sh $(DERU-F1-SENTENCES) > $@
